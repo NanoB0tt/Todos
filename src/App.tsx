@@ -1,45 +1,17 @@
-import { create } from "zustand";
-
-
-type State = {
-  firstName: string;
-  lastName: string;
-}
-
-type Actions = {
-  updateFirstName: (firstName: State['firstName']) => void;
-  updateLastName: (lastName: State['lastName']) => void;
-}
-
-const useStore = create<State & Actions>((set) => ({
-  firstName: '',
-  lastName: '',
-  updateFirstName: (firstName) => set(() => ({ firstName: firstName })),
-  updateLastName: (lastName) => set(() => ({ lastName: lastName })),
-}));
+import TodoAdd from "./components/TodoAdd/TodoAdd"
+import { Box } from "@chakra-ui/react";
+import TodoList from "./components/TodoList/TodoList";
+import TopBar from "./components/TopBar/TopBar";
 
 const App = () => {
 
-  const [firstName, updateFirstName] = useStore(
-    (state) => [state.firstName, state.updateFirstName]
-  );
-
   return (
-    <main>
-      <label>
-        First Name
-        <input
-          onChange={(e) => updateFirstName(e.currentTarget.value)}
-          value={firstName}
-        />
-      </label>
-
-      <p>
-        Hello, <strong>{firstName}!</strong>
-      </p>
-    </main>
+    <Box maxWidth={"5xl"} margin="auto" p={5}>
+      <TopBar />
+      <TodoList />
+      <TodoAdd />
+    </Box>
   )
-
 }
 
-export default App
+export default App;
