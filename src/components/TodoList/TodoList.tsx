@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import TodoListItems from "./TodoListItems";
 
 
@@ -6,8 +6,9 @@ const TodoList = () => {
 
   return (
     <>
-      <Heading>Todo List</Heading>
-      <TodoListItems />
+      <Box height="sm" overflow="scroll" pr="2">
+        <TodoListItems />
+      </Box>
     </>
   )
 
