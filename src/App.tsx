@@ -6,10 +6,10 @@ import TopBar from "./components/TopBar/TopBar";
 const App = () => {
 
   return (
-    <Box maxWidth={"5xl"} margin="auto" p={5}>
+    <Box maxWidth="5xl" maxHeight="100vh" margin="auto" p={5}>
       <TopBar />
-      <TodoList />
       <TodoAdd />
+      <TodoList />
     </Box>
   )
 }

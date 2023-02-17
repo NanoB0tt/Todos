@@ -1,16 +1,19 @@
 import { Button, Checkbox, Flex, Input } from "@chakra-ui/react";
+import { Todo, UseTodoStore } from "../../stores/TodoStore";
 
 
 
 const TodoListItems = () => {
 
+  const { todos, deleteTodo, checkDone, updateTodo } = UseTodoStore();
+
   return (
     <>
-      {[].map((todo: { id: number; text: string }) => (
+      {todos.map((todo: Todo) => (
         <Flex pt={2} key={todo.id}>
-          <Checkbox />
-          <Input mx={2} value={todo.text} />
-          <Button>Delete</Button>
+          <Checkbox isChecked={todo.done} onChange={() => checkDone(todo.id)} />
+          <Input mx={2} value={todo.task} onChange={(e) => updateTodo(todo.id, e.target.value)} />
+          <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>
         </Flex>
       ))}
     </>
