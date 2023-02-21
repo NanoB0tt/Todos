@@ -1,11 +1,19 @@
 import { Button, Checkbox, Flex, Input } from "@chakra-ui/react";
+import { shallow } from "zustand/shallow";
 import { Todo, UseTodoStore } from "../../stores/TodoStore";
 
 
 
 const TodoListItems = () => {
 
-  const { todos, deleteTodo, checkDone, updateTodo } = UseTodoStore();
+  const { todos, deleteTodo, checkDone, updateTodo } = UseTodoStore(
+    (state) => ({
+      todos: state.todos,
+      deleteTodo: state.deleteTodo,
+      checkDone: state.checkDone,
+      updateTodo: state.updateTodo
+    }), shallow
+  );
 
   return (
     <>

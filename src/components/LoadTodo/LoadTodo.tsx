@@ -1,13 +1,14 @@
-import { Button, Input } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
 import { ChangeEvent, useState } from "react";
+import { Button, Input } from "@chakra-ui/react";
+import { shallow } from "zustand/shallow";
+import { nanoid } from "nanoid";
 import { Todo, UseTodoStore } from "../../stores/TodoStore";
 
 
 const LoadTodo = () => {
 
   const [active, setActive] = useState(false);
-  const { loadTodo } = UseTodoStore();
+  const { loadTodo } = UseTodoStore((state) => ({ loadTodo: state.loadTodo }), shallow);
 
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
