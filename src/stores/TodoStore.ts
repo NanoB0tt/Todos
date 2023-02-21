@@ -51,7 +51,7 @@ const deleteTodo = (todos: Todo[], id: string): Todo[] =>
   todos.filter(todo => todo.id !== id);
 
 
-export const UseTodoStore = create<State & Actions>((set) => ({
+export const UseTodoStore = create<State & Actions>()((set) => ({
   todos: [],
   newTodo: "",
   addTodo() {
