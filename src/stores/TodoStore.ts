@@ -1,5 +1,5 @@
+import { Action, action, createStore, createTypedHooks } from "easy-peasy";
 import { nanoid } from "nanoid";
-import { create } from "zustand";
 
 export interface Todo {
   id: string;
@@ -7,88 +7,58 @@ export interface Todo {
   done: boolean;
 }
 
-type State = {
+export interface TodosModel {
   todos: Todo[];
   newTodo: string;
+  addTodo: Action<TodosModel>;
+  addNewTodo: Action<TodosModel, string>;
+  checkDone: Action<TodosModel, string>;
+  updateTodo: Action<TodosModel, Omit<Todo, "done">>;
+  loadTodo: Action<TodosModel, Todo[]>;
+  deleteTodo: Action<TodosModel, string>;
 }
 
-type Actions = {
-  addTodo: () => void;
-  addNewTodo: (task: string) => void;
-  checkDone: (id: string) => void;
-  updateTodo: (id: string, task: string) => void;
-  loadTodo: (todos: Todo[]) => void;
-  deleteTodo: (id: string) => void;
-}
-
-const addTodo = (todos: Todo[], task: string): Todo[] => [
-  ...todos,
-  {
-    id: nanoid(),
-    task,
-    done: false
-  },
-];
-
-const checkDone = (todos: Todo[], id: string): Todo[] =>
-  todos.map(todo => ({
-    ...todo,
-    done: todo.id === id ? !todo.done : todo.done
-  }));
-
-const updateTodo = (todos: Todo[], id: string, task: string): Todo[] =>
-  todos.map(todo => ({
-    ...todo,
-    task: todo.id === id ? task : todo.task
-  }));
-
-const loadTodo = (todos: Todo[], fileTodo: Todo[]): Todo[] => [
-  ...todos,
-  ...fileTodo
-]
-
-const deleteTodo = (todos: Todo[], id: string): Todo[] =>
-  todos.filter(todo => todo.id !== id);
-
-
-export const UseTodoStore = create<State & Actions>()((set) => ({
+export const todoStore = createStore<TodosModel>({
   todos: [],
   newTodo: "",
-  addTodo() {
-    set((state) => ({
-      todos: addTodo(state.todos, state.newTodo),
-      newTodo: ""
-    }));
-  },
-  addNewTodo(text: string) {
-    set(state => ({
-      ...state,
-      newTodo: text
-    }));
-  },
-  checkDone(id: string) {
-    set(state => ({
-      ...state,
-      todos: checkDone(state.todos, id)
-    }));
-  },
-  updateTodo(id: string, task: string) {
-    set(state => ({
-      ...state,
-      todos: updateTodo(state.todos, id, task)
-    }));
-  },
-  loadTodo(fileTodo: Todo[]) {
-    set(state => ({
-      ...state,
-      todos: loadTodo(state.todos, fileTodo)
+  addTodo: action(state => {
+    state.todos = [
+      ...state.todos,
+      {
+        id: nanoid(),
+        task: state.newTodo,
+        done: false
+      },
+    ];
+    state.newTodo = ""
+  }),
+  addNewTodo: action((state, payload) => {
+    state.newTodo = payload
+  }),
+  checkDone: action((state, payload) => {
+    state.todos = state.todos.map((todo) => ({
+      ...todo,
+      done: todo.id === payload ? !todo.done : todo.done
     }))
-  },
-  deleteTodo(id: string) {
-    set(state => ({
-      ...state,
-      todos: deleteTodo(state.todos, id)
-    }));
-  }
-}))
+  }),
+  updateTodo: action((state, payload) => {
+    state.todos = state.todos.map((todo) => ({
+      ...todo,
+      task: todo.id === payload.id ? payload.task : todo.task
+    }))
+  }),
+  loadTodo: action((state, payload) => {
+    state.todos = [
+      ...state.todos,
+      ...payload
+    ]
+  }),
+  deleteTodo: action((state, payload) => {
+    state.todos = state.todos.filter((todo) => todo.id !== payload)
+  })
+})
 
+const typedHooks = createTypedHooks<TodosModel>();
+
+export const useStoreActions = typedHooks.useStoreActions;
+export const useStoreState = typedHooks.useStoreState;
