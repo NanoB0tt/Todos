@@ -1,14 +1,14 @@
 import { ChangeEvent, useState } from "react";
 import { Button, Input } from "@chakra-ui/react";
-import { shallow } from "zustand/shallow";
 import { nanoid } from "nanoid";
-import { Todo, UseTodoStore } from "../../stores/TodoStore";
+import { useDispatch } from "react-redux";
+import { loadTodo, Todo } from "../../stores/slices/todoSlice";
 
 
 const LoadTodo = () => {
 
   const [active, setActive] = useState(false);
-  const { loadTodo } = UseTodoStore((state) => ({ loadTodo: state.loadTodo }), shallow);
+  const dispatch = useDispatch()
 
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -16,7 +16,7 @@ const LoadTodo = () => {
       const text = reader.result as string;
       const result: Omit<Todo, "id">[] = JSON.parse(text);
       const todo = insertNanoId(result);
-      loadTodo(todo);
+      dispatch(loadTodo(todo));
     }
     if (e.target.files !== null) {
       reader.readAsText(e.target.files[0])

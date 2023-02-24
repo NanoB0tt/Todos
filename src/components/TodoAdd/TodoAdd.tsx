@@ -1,23 +1,19 @@
 import { Button, Grid, Input } from "@chakra-ui/react";
-import { shallow } from "zustand/shallow";
-import { UseTodoStore } from "../../stores/TodoStore";
+import { useSelector, useDispatch } from 'react-redux';
+import { addNewTodo, addTodo } from "../../stores/slices/todoSlice";
+import { RootState } from "../../stores/TodoStore";
 
 
 const TodoAdd = () => {
 
-  const { addTodo, addNewTodo, newTodo } = UseTodoStore(
-    (state) => (
-      {
-        addTodo: state.addTodo,
-        addNewTodo: state.addNewTodo,
-        newTodo: state.newTodo
-      }), shallow
-  );
+  const task = useSelector((state: RootState) => state.todo.newTodo)
+  const dispatch = useDispatch()
+
 
   return (
     <Grid pt={2} templateColumns="5fr 1fr" columnGap="3" mb="5">
-      <Input placeholder="New Todo" onChange={(e) => addNewTodo(e.target.value)} value={newTodo} />
-      <Button onClick={addTodo}>Add Todo</Button>
+      <Input placeholder="New Todo" onChange={(e) => dispatch(addNewTodo(e.target.value))} value={task} />
+      <Button onClick={() => dispatch(addTodo())}>Add Todo</Button>
     </Grid>
   )
 
