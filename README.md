@@ -1,5 +1,5 @@
 # Todo
-A Todo app made to compare different state managers such as Zustand, Redux, and Easy Peasy.
+A Todo app made to compare different state managers such as [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction), [Redux](https://redux.js.org/), and [Easy Peasy](https://easy-peasy.dev/).
 
 ## Main branch (zustand branch)
 
