@@ -1,6 +1,8 @@
 # Todo
 A Todo app made to compare different state managers such as [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction), [Redux](https://redux.js.org/), and [Easy Peasy](https://easy-peasy.dev/).
 
+![Todos Picture preview](public/Todos.png)
+
 ## Main branch (zustand branch)
 
 1. Clone the repository.
