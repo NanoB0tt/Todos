@@ -11,9 +11,9 @@ const TodoAdd = () => {
 
 
   return (
-    <Grid pt={2} templateColumns="5fr 1fr" columnGap="3" mb="5">
+    <Grid pt={2} templateColumns="5fr 1fr" columnGap="2" mb="5">
       <Input placeholder="New Todo" onChange={(e) => dispatch(addNewTodo(e.target.value))} value={task} />
-      <Button onClick={() => dispatch(addTodo())}>Add Todo</Button>
+      <Button onClick={() => dispatch(addTodo())}>Add</Button>
     </Grid>
   )
 
