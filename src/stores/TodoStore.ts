@@ -25,15 +25,17 @@ export const todoStore = createStore<TodosModel>({
   newTodo: "",
   todosFromLoad: "",
   addTodo: action(state => {
-    state.todos = [
-      ...state.todos,
-      {
-        id: nanoid(),
-        task: state.newTodo,
-        done: false
-      },
-    ];
-    state.newTodo = ""
+    if (state.newTodo) {
+      state.todos = [
+        ...state.todos,
+        {
+          id: nanoid(),
+          task: state.newTodo,
+          done: false
+        },
+      ];
+      state.newTodo = ""
+    }
   }),
   addNewTodo: action((state, payload) => {
     state.newTodo = payload
