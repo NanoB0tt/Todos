@@ -1,6 +1,7 @@
+import { AnyAction } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
-import { ChangeEvent } from "react";
-import { Todo } from "../stores/TodoStore";
+import { ChangeEvent, Dispatch } from "react";
+import { addTodoFromLoad, Todo } from "../stores/slices/todoSlice";
 
 
 export const validateTodo = (str: string) => {
@@ -23,12 +24,12 @@ export const insertNanoId = (todos: Omit<Todo, "id">[]): Todo[] =>
 
 export const handleFile = (
   e: ChangeEvent<HTMLInputElement>,
-  addTodoFromLoad: (todo: string) => void
+  dispatch: Dispatch<AnyAction>
 ) => {
   const reader = new FileReader();
   reader.onload = () => {
     const text = reader.result as string;
-    addTodoFromLoad(text);
+    dispatch(addTodoFromLoad(text));
   }
   if (e.target.files !== null) {
     reader.readAsText(e.target.files[0])

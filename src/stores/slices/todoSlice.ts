@@ -11,11 +11,13 @@ export interface Todo {
 export interface TodoState {
   todos: Todo[];
   newTodo: string;
+  todosFromLoad: string;
 }
 
 const initialState: TodoState = {
   todos: [],
-  newTodo: ""
+  newTodo: "",
+  todosFromLoad: ""
 }
 
 export const todoSlice = createSlice({
@@ -55,6 +57,9 @@ export const todoSlice = createSlice({
         return { payload: { id, task } }
       }
     },
+    addTodoFromLoad: (state, action: PayloadAction<string>) => {
+      state.todosFromLoad = action.payload
+    },
     loadTodo: (state, action: PayloadAction<Todo[]>) => {
       state.todos = [
         ...state.todos,
@@ -69,6 +74,6 @@ export const todoSlice = createSlice({
 
 
 // Actions creators are generated for each case reducer function
-export const { addTodo, addNewTodo, checkDone, updateTodo, loadTodo, deleteTodo } = todoSlice.actions;
+export const { addTodo, addNewTodo, checkDone, updateTodo, addTodoFromLoad, loadTodo, deleteTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;

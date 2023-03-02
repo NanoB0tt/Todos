@@ -1,13 +1,16 @@
-import { useDispatch } from "react-redux";
-import { loadTodo, Todo } from "../../stores/slices/todoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loadTodo, addTodoFromLoad } from "../../stores/slices/todoSlice";
 import { Box, Button, Input, useDisclosure } from "@chakra-ui/react";
 import { handleFile, makeTodoFromLoad, validateTodo } from "../../utils/utils";
 import InvalidTodoAlert from "../InvalidTodoAlert/InvalidTodoAlert";
+import { useState } from "react";
+import { RootState } from "../../stores/TodoStore";
 
 
 const LoadTodo = () => {
 
   const [active, setActive] = useState(false);
+  const todosFromLoad = useSelector((state: RootState) => state.todo.todosFromLoad)
   const dispatch = useDispatch()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -23,7 +26,7 @@ const LoadTodo = () => {
           e.preventDefault();
           setActive(!active);
           !validateTodo(todosFromLoad) && onOpen()
-          validateTodo(todosFromLoad) && loadTodo(makeTodoFromLoad(todosFromLoad));
+          validateTodo(todosFromLoad) && dispatch(loadTodo(makeTodoFromLoad(todosFromLoad)));
         }} style={{ display: 'flex', gap: '0.5rem' }}>
           <Input
             width={["100%", "max-content"]}
@@ -31,7 +34,7 @@ const LoadTodo = () => {
             accept=".json"
             p="1"
             onChange={(e) => {
-              handleFile(e, addTodoFromLoad)
+              handleFile(e, dispatch)
             }}
           />
           <Button type="submit">Accept</Button>
