@@ -1,51 +1,50 @@
-import { ChangeEvent, useState } from "react";
-import { Button, Input } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Button, Input, useDisclosure } from "@chakra-ui/react";
 import { shallow } from "zustand/shallow";
-import { nanoid } from "nanoid";
-import { Todo, UseTodoStore } from "../../stores/TodoStore";
+import { UseTodoStore } from "../../stores/TodoStore";
+import { handleFile, makeTodoFromLoad, validateTodo } from "../../utils/utils";
+import InvalidTodoAlert from "../InvalidTodoAlert/InvalidTodoAlert";
 
 
 const LoadTodo = () => {
 
   const [active, setActive] = useState(false);
-  const { loadTodo } = UseTodoStore((state) => ({ loadTodo: state.loadTodo }), shallow);
-
-  const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = reader.result as string;
-      const result: Omit<Todo, "id">[] = JSON.parse(text);
-      const todo = insertNanoId(result);
-      loadTodo(todo);
-    }
-    if (e.target.files !== null) {
-      reader.readAsText(e.target.files[0])
-    }
-  }
-
-  const insertNanoId = (todos: Omit<Todo, "id">[]): Todo[] =>
-    todos.map(todo => ({
-      ...todo,
-      id: nanoid()
-    }));
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { loadTodo, addTodoFromLoad, todosFromLoad } = UseTodoStore(
+    (state) => ({
+      loadTodo: state.loadTodo,
+      addTodoFromLoad: state.addTodoFromLoad,
+      todosFromLoad: state.todosFromLoad
+    }), shallow
+  );
 
   return (
-    <>
-      <Button onClick={() => setActive(!active)}>
+    <Box display={{ base: 'grid', sm: 'flex' }} width={["100%", "max"]} gap="0.5rem">
+      <Button onClick={() => setActive(!active)} width="100%">
         Load
       </Button>
+      <InvalidTodoAlert isOpen={isOpen} onClose={onClose} />
       {active && <>
         <form onSubmit={(e) => {
           e.preventDefault();
           setActive(!active);
-        }}>
-          <Input width="sm" type="file" accept=".json" p="1" onChange={(e) => handleFile(e)} />
+          !validateTodo(todosFromLoad) && onOpen()
+          validateTodo(todosFromLoad) && loadTodo(makeTodoFromLoad(todosFromLoad));
+        }} style={{ display: 'flex', gap: '0.5rem' }}>
+          <Input
+            width={["100%", "max-content"]}
+            type="file"
+            accept=".json"
+            p="1"
+            onChange={(e) => {
+              handleFile(e, addTodoFromLoad)
+            }}
+          />
           <Button type="submit">Accept</Button>
         </form>
       </>
       }
-    </>
+    </Box>
   )
 }
 
