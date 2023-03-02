@@ -1,4 +1,4 @@
-import { Todo, useStoreActions } from "../../stores/TodoStore";
+import { useStoreActions, useStoreState } from "../../stores/TodoStore";
 import { useState } from "react";
 import { Box, Button, Input, useDisclosure } from "@chakra-ui/react";
 import { handleFile, makeTodoFromLoad, validateTodo } from "../../utils/utils";
@@ -8,7 +8,9 @@ import InvalidTodoAlert from "../InvalidTodoAlert/InvalidTodoAlert";
 const LoadTodo = () => {
 
   const [active, setActive] = useState(false);
+  const todosFromLoad = useStoreState((state) => state.todosFromLoad);
   const loadTodo = useStoreActions((actions) => actions.loadTodo);
+  const addTodoFromLoad = useStoreActions((actions) => actions.addTodoFromLoad);
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (

@@ -10,10 +10,12 @@ export interface Todo {
 export interface TodosModel {
   todos: Todo[];
   newTodo: string;
+  todosFromLoad: string;
   addTodo: Action<TodosModel>;
   addNewTodo: Action<TodosModel, string>;
   checkDone: Action<TodosModel, string>;
   updateTodo: Action<TodosModel, Omit<Todo, "done">>;
+  addTodoFromLoad: Action<TodosModel, string>;
   loadTodo: Action<TodosModel, Todo[]>;
   deleteTodo: Action<TodosModel, string>;
 }
@@ -21,6 +23,7 @@ export interface TodosModel {
 export const todoStore = createStore<TodosModel>({
   todos: [],
   newTodo: "",
+  todosFromLoad: "",
   addTodo: action(state => {
     state.todos = [
       ...state.todos,
@@ -46,6 +49,9 @@ export const todoStore = createStore<TodosModel>({
       ...todo,
       task: todo.id === payload.id ? payload.task : todo.task
     }))
+  }),
+  addTodoFromLoad: action((state, payload) => {
+    state.todosFromLoad = payload
   }),
   loadTodo: action((state, payload) => {
     state.todos = [
