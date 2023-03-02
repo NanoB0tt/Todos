@@ -3,7 +3,7 @@ A Todo app made to compare different state managers such as [Zustand](https://do
 
 ![Todos Picture preview](public/Todos.png)
 
-## Main branch (zustand branch)
+## Redux branch
 
 1. Clone the repository.
 2. Install dependencies.
