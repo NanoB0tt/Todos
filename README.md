@@ -2,6 +2,7 @@
 A Todo app made to compare different state managers such as [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction), [Redux](https://redux.js.org/), and [Easy Peasy](https://easy-peasy.dev/).
 
 ![Todos Picture preview](public/Todos.png)
+[Demo site](https://todos-nanob0tt.netlify.app/)
 
 ## Easy Peasy branch
 
