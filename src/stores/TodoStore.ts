@@ -59,7 +59,7 @@ export const UseTodoStore = create<State & Actions>()((set) => ({
   todosFromLoad: "",
   addTodo() {
     set((state) => ({
-      todos: addTodo(state.todos, state.newTodo),
+      todos: state.newTodo ? addTodo(state.todos, state.newTodo) : state.todos,
       newTodo: ""
     }));
   },
