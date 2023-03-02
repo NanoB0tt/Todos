@@ -10,6 +10,7 @@ export interface Todo {
 type State = {
   todos: Todo[];
   newTodo: string;
+  todosFromLoad: string;
 }
 
 type Actions = {
@@ -17,6 +18,7 @@ type Actions = {
   addNewTodo: (task: string) => void;
   checkDone: (id: string) => void;
   updateTodo: (id: string, task: string) => void;
+  addTodoFromLoad: (todos: string) => void;
   loadTodo: (todos: Todo[]) => void;
   deleteTodo: (id: string) => void;
 }
@@ -54,6 +56,7 @@ const deleteTodo = (todos: Todo[], id: string): Todo[] =>
 export const UseTodoStore = create<State & Actions>()((set) => ({
   todos: [],
   newTodo: "",
+  todosFromLoad: "",
   addTodo() {
     set((state) => ({
       todos: addTodo(state.todos, state.newTodo),
@@ -61,32 +64,32 @@ export const UseTodoStore = create<State & Actions>()((set) => ({
     }));
   },
   addNewTodo(text: string) {
-    set(state => ({
-      ...state,
+    set(() => ({
       newTodo: text
     }));
   },
   checkDone(id: string) {
     set(state => ({
-      ...state,
       todos: checkDone(state.todos, id)
     }));
   },
   updateTodo(id: string, task: string) {
     set(state => ({
-      ...state,
       todos: updateTodo(state.todos, id, task)
     }));
   },
+  addTodoFromLoad(todo: string) {
+    set(() => ({
+      todosFromLoad: todo
+    }))
+  },
   loadTodo(fileTodo: Todo[]) {
     set(state => ({
-      ...state,
       todos: loadTodo(state.todos, fileTodo)
     }))
   },
   deleteTodo(id: string) {
     set(state => ({
-      ...state,
       todos: deleteTodo(state.todos, id)
     }));
   }
